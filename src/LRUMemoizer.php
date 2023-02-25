@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Phpyh\LRUMemoizer;
+namespace PHPyh\LRUMemoizer;
 
 final class LRUMemoizer
 {

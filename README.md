@@ -9,7 +9,7 @@ composer require phpyh/lru-memoizer
 ## Usage
 
 ```php
-use Phpyh\LRUMemoizer\LRUMemoizer;
+use PHPyh\LRUMemoizer\LRUMemoizer;
 
 final class Metadata {}
 

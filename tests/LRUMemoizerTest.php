@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Phpyh\LRUMemoizer;
+namespace PHPyh\LRUMemoizer;
 
 use PHPUnit\Framework\TestCase;
 use function PHPUnit\Framework\assertSame;
 
 /**
  * @internal
- * @covers \Phpyh\LRUMemoizer\LRUMemoizer
+ * @covers \PHPyh\LRUMemoizer\LRUMemoizer
  */
-final class MemoizerTest extends TestCase
+final class LRUMemoizerTest extends TestCase
 {
     /**
      * @param callable(): mixed $factory

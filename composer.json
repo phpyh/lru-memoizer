@@ -5,12 +5,12 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Phpyh\\LRUMemoizer\\": "src/"
+            "PHPyh\\LRUMemoizer\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Phpyh\\LRUMemoizer\\": "tests/"
+            "PHPyh\\LRUMemoizer\\": "tests/"
         }
     },
     "authors": [
