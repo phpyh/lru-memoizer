@@ -16,7 +16,7 @@ final class Metadata {}
 final class MetadataFactory
 {
     public function __construct(
-        private readonly LRUMemoizer $memoizer = new LRUMemoizer(maxItems: 25),
+        private readonly LRUMemoizer $memoizer = new LRUMemoizer(capacity: 25),
     ) {
     }
 
