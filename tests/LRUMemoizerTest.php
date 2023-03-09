@@ -16,21 +16,19 @@ final class LRUMemoizerTest extends TestCase
     /**
      * @param callable(): mixed $factory
      */
-    private static function assertMemoizedValueSame(LRUMemoizer $memoizer, string $key, callable $factory, mixed $expectedValue): void
+    private static function viewMemoizedValue(LRUMemoizer $memoizer, string $key, callable $factory): mixed
     {
-        $memoizer = clone $memoizer;
-        $actualValue = $memoizer->get($key, $factory);
-
-        assertSame($actualValue, $expectedValue);
+        return (clone $memoizer)->get($key, $factory);
     }
 
     public function testItSavesValue(): void
     {
         $memoizer = new LRUMemoizer();
-
         $memoizer->get('a', static fn (): string => 'a1');
 
-        self::assertMemoizedValueSame($memoizer, 'a', static fn (): string => 'a2', 'a1');
+        $a = self::viewMemoizedValue($memoizer, 'a', static fn (): string => 'a2');
+
+        self::assertSame($a, 'a1');
     }
 
     public function testItPrunes(): void
@@ -39,20 +37,41 @@ final class LRUMemoizerTest extends TestCase
         $memoizer->get('a', static fn (): string => 'a1');
 
         $memoizer->prune();
+        $a = self::viewMemoizedValue($memoizer, 'a', static fn (): string => 'a2');
 
-        self::assertMemoizedValueSame($memoizer, 'a', static fn (): string => 'a2', 'a2');
+        self::assertSame($a, 'a2');
     }
 
-    public function testItDiscardsLeastRecentlyUsedItems(): void
+    public function testItTakesCapacityIntoAccount(): void
     {
-        $memoizer = new LRUMemoizer(maxItems: 2);
+        $memoizer = new LRUMemoizer(capacity: 2);
         $memoizer->get('a', static fn (): string => 'a1');
         $memoizer->get('b', static fn (): string => 'b1');
-
         $memoizer->get('c', static fn (): string => 'c1');
 
-        self::assertMemoizedValueSame($memoizer, 'a', static fn (): string => 'a2', 'a2');
-        self::assertMemoizedValueSame($memoizer, 'b', static fn (): string => 'b2', 'b1');
-        self::assertMemoizedValueSame($memoizer, 'c', static fn (): string => 'c2', 'c1');
+        $a = self::viewMemoizedValue($memoizer, 'a', static fn (): string => 'a2');
+        $b = self::viewMemoizedValue($memoizer, 'b', static fn (): string => 'b2');
+        $c = self::viewMemoizedValue($memoizer, 'c', static fn (): string => 'c2');
+
+        self::assertSame($a, 'a2');
+        self::assertSame($b, 'b1');
+        self::assertSame($c, 'c1');
+    }
+
+    public function testItRemovesLeastRecentlyUsed(): void
+    {
+        $memoizer = new LRUMemoizer(capacity: 2);
+        $memoizer->get('a', static fn (): string => 'a1');
+        $memoizer->get('b', static fn (): string => 'b1');
+        $memoizer->get('a', static fn (): string => 'a1');
+        $memoizer->get('c', static fn (): string => 'c1');
+
+        $a = self::viewMemoizedValue($memoizer, 'a', static fn (): string => 'a2');
+        $b = self::viewMemoizedValue($memoizer, 'b', static fn (): string => 'b2');
+        $c = self::viewMemoizedValue($memoizer, 'c', static fn (): string => 'c2');
+
+        self::assertSame($a, 'a1');
+        self::assertSame($b, 'b2');
+        self::assertSame($c, 'c1');
     }
 }

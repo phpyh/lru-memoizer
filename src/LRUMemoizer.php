@@ -6,7 +6,7 @@ namespace PHPyh\LRUMemoizer;
 
 final class LRUMemoizer
 {
-    public const MAX_ITEMS_DEFAULT = 100;
+    public const CAPACITY_DEFAULT = 100;
 
     /**
      * @var array<string, mixed>
@@ -14,10 +14,10 @@ final class LRUMemoizer
     private array $itemsByKey = [];
 
     /**
-     * @param positive-int $maxItems
+     * @param positive-int $capacity
      */
     public function __construct(
-        private readonly int $maxItems = self::MAX_ITEMS_DEFAULT,
+        private readonly int $capacity = self::CAPACITY_DEFAULT,
     ) {
     }
 
@@ -40,7 +40,7 @@ final class LRUMemoizer
         $value = $factory();
         $this->itemsByKey[$key] = $value;
 
-        if (\count($this->itemsByKey) > $this->maxItems) {
+        if (\count($this->itemsByKey) > $this->capacity) {
             array_shift($this->itemsByKey);
         }
 
