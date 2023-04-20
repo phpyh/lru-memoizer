@@ -9,14 +9,14 @@ composer require phpyh/lru-memoizer
 ## Usage
 
 ```php
-use PHPyh\LRUMemoizer\LRUMemoizer;
+use PHPyh\LRUMemoizer\ArrayLRUMemoizer;
 
 final class Metadata {}
 
 final class MetadataFactory
 {
     public function __construct(
-        private readonly LRUMemoizer $memoizer = new LRUMemoizer(capacity: 25),
+        private readonly ArrayLRUMemoizer $memoizer = new ArrayLRUMemoizer(capacity: 25),
     ) {
     }
 
