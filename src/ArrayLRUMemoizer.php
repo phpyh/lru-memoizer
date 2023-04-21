@@ -17,7 +17,7 @@ final class ArrayLRUMemoizer implements LRUMemoizer
      * @param positive-int $capacity
      */
     public function __construct(
-        private readonly int $capacity = self::CAPACITY_DEFAULT,
+        private int $capacity = self::CAPACITY_DEFAULT,
     ) {
     }
 

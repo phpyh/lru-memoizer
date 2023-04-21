@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace PHPyh\LRUMemoizer;
 
 use PHPUnit\Framework\TestCase;
+use function DeepCopy\deep_copy;
 
 /**
  * @internal
@@ -16,7 +17,7 @@ abstract class LRUMemoizerTest extends TestCase
      */
     private static function viewMemoizedValue(LRUMemoizer $memoizer, string $key, callable $factory): mixed
     {
-        return (clone $memoizer)->get($key, $factory);
+        return deep_copy($memoizer)->get($key, $factory);
     }
 
     final public function testItSavesValue(): void
